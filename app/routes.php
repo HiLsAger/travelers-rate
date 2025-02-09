@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+use App\Application\Actions\Attractions\AddAttractionsAction;
+use App\Application\Actions\Attractions\GetAttractionsAction;
+use App\Application\Actions\Attractions\ViewAttractionsAction;
 use App\Application\Actions\Cities\AddCitiesAction;
 use App\Application\Actions\Cities\GetCitiesAction;
 use App\Application\Actions\Cities\ViewCitiesAction;
@@ -34,5 +37,11 @@ return function (App $app) {
         $group->get('', GetCitiesAction::class);
         $group->post('', AddCitiesAction::class);
         $group->get('/{id}', ViewCitiesAction::class);
+    });
+
+    $app->group('/attractions', function (Group $group) {
+        $group->get('', GetAttractionsAction::class);
+        $group->post('', AddAttractionsAction::class);
+        $group->get('/{id}', ViewAttractionsAction::class);
     });
 };
