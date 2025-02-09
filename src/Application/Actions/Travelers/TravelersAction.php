@@ -11,14 +11,14 @@ use Psr\Log\LoggerInterface;
 
 abstract class TravelersAction extends Action
 {
-    protected TravelersRepository $userRepository;
+    protected TravelersRepository $travelersRepository;
 
     protected Connection $db;
 
-    public function __construct(LoggerInterface $logger, TravelersRepository $userRepository, Connection $db)
+    public function __construct(LoggerInterface $logger, TravelersRepository $travelersRepository, Connection $db)
     {
         parent::__construct($logger);
-        $this->userRepository = $userRepository;
+        $this->travelersRepository = $travelersRepository;
         $this->db = $db;
     }
 }

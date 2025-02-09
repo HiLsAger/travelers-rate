@@ -13,11 +13,11 @@ class ViewTravelersAction extends TravelersAction
      */
     protected function action(): Response
     {
-        $userId = (int) $this->resolveArg('id');
-        $user = $this->userRepository->findUserOfId($userId);
+        $travelerId = (int) $this->resolveArg('id');
+        $traveler = $this->travelersRepository->findUserOfId($travelerId);
 
-        $this->logger->info("User of id `${userId}` was viewed.");
+        $this->logger->info("Traveler of id `$travelerId` was viewed.");
 
-        return $this->respondWithData($user);
+        return $this->respondWithData($traveler);
     }
 }

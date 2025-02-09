@@ -13,9 +13,9 @@ class GetTravelersAction extends TravelersAction
      */
     protected function action(): Response
     {
-        $travelers = $this->userRepository->findAll();
+        $travelers = $this->travelersRepository->findAll();
 
-        $this->logger->info("Users list was viewed.");
+        $this->logger->info("Travelers list was viewed.");
 
         return $this->respondWithData($travelers);
     }

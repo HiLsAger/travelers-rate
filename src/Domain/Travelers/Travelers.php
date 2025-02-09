@@ -4,36 +4,45 @@ declare(strict_types=1);
 
 namespace App\Domain\Travelers;
 
+use App\Domain\Model;
 use JsonSerializable;
+use Respect\Validation\Validator;
 
-class Travelers implements JsonSerializable
+class Travelers extends Model implements JsonSerializable
 {
-    private ?int $id;
+    public ?int $id;
 
-    private string $name;
+    public string $name;
 
-    public function __construct(?int $id, string $name, string $firstName, string $lastName)
+    public function __construct(?int $id = null, string $name = '')
     {
         $this->id = $id;
         $this->name = strtolower($name);
     }
 
-    public function getId(): ?int
+    public function getRules()
     {
-        return $this->id;
+        return [
+            'name' => Validator::stringVal()->notBlank()->length(null, 255),
+        ];
     }
 
-    public function getName(): string
+    public function getId(): ?int
     {
-        return $this->name;
+        return $this->id ?? null;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name ?? null;
     }
 
     #[\ReturnTypeWillChange]
     public function jsonSerialize(): array
     {
         return [
-            'id' => $this->id,
-            'name' => $this->name,
+            'id' => $this->getId(),
+            'name' => $this->getName(),
         ];
     }
 }

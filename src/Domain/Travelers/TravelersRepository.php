@@ -8,6 +8,8 @@ use Doctrine\DBAL\Connection;
 
 class TravelersRepository
 {
+    protected string $tableName = 'travelers';
+
     protected Connection $db;
 
     public function __construct(Connection $db)
@@ -20,10 +22,17 @@ class TravelersRepository
      */
     public function findAll(): array
     {
-        return $this->db->createQueryBuilder()
+         $data = $this->db->createQueryBuilder()
             ->select('*')
-            ->from('travelers')
+            ->from($this->tableName)
             ->fetchAllAssociative();
+
+         $travelers = [];
+         foreach ($data as $traveler) {
+            $travelers[] = $this->loadTraveler($traveler);
+         }
+
+         return $travelers;
     }
 
     /**
@@ -33,11 +42,38 @@ class TravelersRepository
      */
     public function findUserOfId(int $id): Travelers
     {
-        return $this->db->createQueryBuilder()
+        $traveler = $this->db->createQueryBuilder()
             ->select('*')
-            ->from('travelers')
+            ->from($this->tableName)
             ->where('id = :id')
-            ->setParameters('id', $id)
-            ->fetchOne();
+            ->setParameter('id', $id)
+            ->fetchAssociative();
+
+        return $this->loadTraveler($traveler);
+    }
+    public function insertRecord(Travelers $traveler): int
+    {
+        $this->db->insert($this->tableName, $traveler->jsonSerialize());
+
+        return (int)$this->db->lastInsertId();
+    }
+
+    public function updateRecord(Travelers $traveler): int
+    {
+        $this->db->update(
+            $this->tableName,
+            $traveler->jsonSerialize(),
+            ['id' => $traveler->getId()]
+        );
+
+        return $traveler->getId();
+    }
+
+    public function loadTraveler(array $traveler): Travelers
+    {
+        $travelerModel = new Travelers();
+        $travelerModel->load($traveler);
+
+        return $travelerModel;
     }
 }

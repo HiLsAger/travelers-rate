@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Application\Actions\Travelers\AddTravelersAction;
 use App\Application\Actions\Travelers\GetTravelersAction;
 use App\Application\Actions\Travelers\ViewTravelersAction;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -22,6 +23,7 @@ return function (App $app) {
 
     $app->group('/travelers', function (Group $group) {
         $group->get('', GetTravelersAction::class);
+        $group->post('', AddTravelersAction::class);
         $group->get('/{id}', ViewTravelersAction::class);
     });
 };
