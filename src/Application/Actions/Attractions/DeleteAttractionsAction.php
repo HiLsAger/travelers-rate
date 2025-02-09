@@ -6,15 +6,17 @@ namespace App\Application\Actions\Attractions;
 
 use Psr\Http\Message\ResponseInterface as Response;
 
-class GetAttractionsAction extends AttractionsAction
+class DeleteAttractionsAction extends AttractionsAction
 {
     /**
      * {@inheritdoc}
      */
     protected function action(): Response
     {
-        $model = $this->repository->findAll($this->request->getQueryParams());
+        $id = (int)$this->resolveArg('id');
 
-        return $this->respondWithData($model);
+        $this->repository->deleteRecord($id);
+
+        return $this->respondWithData(['id' => $id]);
     }
 }

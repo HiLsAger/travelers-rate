@@ -6,17 +6,17 @@ namespace App\Application\Actions\Travelers;
 
 use Psr\Http\Message\ResponseInterface as Response;
 
-class GetTravelersAction extends TravelersAction
+class DeleteTravelersAction extends TravelersAction
 {
     /**
      * {@inheritdoc}
      */
     protected function action(): Response
     {
-        $model = $this->repository->findAll();
+        $id = (int)$this->resolveArg('id');
 
-        $this->logger->info("Travelers list was viewed.");
+        $this->repository->deleteRecord($id);
 
-        return $this->respondWithData($model);
+        return $this->respondWithData(['id' => $id]);
     }
 }

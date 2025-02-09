@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Actions\Cities;
+namespace App\Application\Actions\Ratings;
 
-use App\Domain\Cities\Cities;
+use App\Domain\Ratings\Ratings;
 use Psr\Http\Message\ResponseInterface as Response;
 use Respect\Validation\Exceptions\ValidationException;
 
-class AddCitiesAction extends CitiesAction
+class AddRatingsAction extends RatingsAction
 {
     /**
      * {@inheritdoc}
@@ -16,7 +16,7 @@ class AddCitiesAction extends CitiesAction
     protected function action(): Response
     {
         /**
-         * @var Cities $model
+         * @var Ratings $model
          */
         $model = $this->repository->load($this->request->getParsedBody());
         $model->id = null;
@@ -26,7 +26,7 @@ class AddCitiesAction extends CitiesAction
         }
 
         if (!$id = $this->repository->insertRecord($model)) {
-            throw new \Exception('Не удалось создать город');
+            throw new \Exception('Не удалось создать рейтинг');
         }
 
         return $this->respondWithData(['id' => $id]);

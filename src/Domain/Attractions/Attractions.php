@@ -39,6 +39,18 @@ class Attractions extends Model implements JsonSerializable
         ];
     }
 
+    public static function getFilters(): array
+    {
+        return [
+            'city_id' => 'city_id'
+        ];
+    }
+
+    public static function getFilter(string $filter): string|bool
+    {
+        return in_array($filter, self::getFilters()) ? self::getFilters()[$filter] : false;
+    }
+
     public function getId(): ?int
     {
         return $this->id ?? null;

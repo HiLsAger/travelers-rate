@@ -2,18 +2,19 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Actions\Attractions;
+namespace App\Application\Actions\Ratings;
 
 use Psr\Http\Message\ResponseInterface as Response;
 
-class GetAttractionsAction extends AttractionsAction
+class GetRatingByAttractionsAction extends RatingsAction
 {
     /**
      * {@inheritdoc}
      */
     protected function action(): Response
     {
-        $model = $this->repository->findAll($this->request->getQueryParams());
+        $id = (int)$this->resolveArg('id');
+        $model = $this->repository->getRatingByAttractions($id);
 
         return $this->respondWithData($model);
     }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Actions\Attractions;
 
+use App\Domain\Attractions\Attractions;
 use Psr\Http\Message\ResponseInterface as Response;
 use Respect\Validation\Exceptions\ValidationException;
 
@@ -14,22 +15,19 @@ class AddAttractionsAction extends AttractionsAction
      */
     protected function action(): Response
     {
-        $city = $this->attractionsRepository->load($this->request->getParsedBody());
+        /**
+         * @var Attractions $attraction
+         */
+        $model = $this->repository->load($this->request->getParsedBody());
+        $model->id = null;
 
-        if (!$city->validate()) {
+        if (!$attraction->validate()) {
             throw new ValidationException('Ошибка в данных');
         }
 
-        if (!$city->getId()) {
-            if (!$id = $this->attractionsRepository->insertRecord($city)) {
-                throw new \Exception('Не удалось создать путешественника');
-            }
 
-            return $this->respondWithData(['id' => $id]);
-        }
-
-        if (!$id = $this->attractionsRepository->insertRecord($city)) {
-            throw new \Exception('Не удалось обновить путешественника');
+        if (!$id = $this->repository->insertRecord($model)) {
+            throw new \Exception('Не удалось создать достопримечательность');
         }
 
         return $this->respondWithData(['id' => $id]);

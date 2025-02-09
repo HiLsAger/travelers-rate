@@ -13,6 +13,16 @@ class Model
         return [];
     }
 
+    public static function getFilters(): array
+    {
+        return [];
+    }
+
+    public static function hasFilter(string $filter): bool
+    {
+        return in_array($filter, self::getFilters());
+    }
+
     public function load($data): bool
     {
         foreach ($data as $property => $value) {
@@ -25,6 +35,7 @@ class Model
 
         return $this->validate();
     }
+
 
     public function getErrors(): array
     {

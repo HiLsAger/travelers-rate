@@ -14,22 +14,14 @@ class AddTravelersAction extends TravelersAction
      */
     protected function action(): Response
     {
-        $traveler = $this->travelersRepository->loadTraveler($this->request->getParsedBody());
+        $model = $this->repository->loadTraveler($this->request->getParsedBody());
 
-        if (!$traveler->validate()) {
+        if (!$model->validate()) {
             throw new ValidationException('Ошибка в данных');
         }
 
-        if (!$traveler->getId()) {
-            if (!$id = $this->travelersRepository->insertRecord($traveler)) {
-                throw new \Exception('Не удалось создать путешественника');
-            }
-
-            return $this->respondWithData(['id' => $id]);
-        }
-
-        if (!$id = $this->travelersRepository->insertRecord($traveler)) {
-            throw new \Exception('Не удалось обновить путешественника');
+        if (!$id = $this->travelersRepository->insertRecord($model)) {
+            throw new \Exception('Не удалось создать путешественника');
         }
 
         return $this->respondWithData(['id' => $id]);

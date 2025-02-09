@@ -11,7 +11,7 @@ use Psr\Log\LoggerInterface;
 
 abstract class TravelersAction extends Action
 {
-    protected TravelersRepository $travelersRepository;
+    protected TravelersRepository $repository;
 
     public function __construct(
         LoggerInterface $logger,
@@ -19,6 +19,6 @@ abstract class TravelersAction extends Action
         Connection $db
     ) {
         parent::__construct($logger);
-        $this->travelersRepository = $travelersRepository;
+        $this->repository = $travelersRepository;
     }
 }

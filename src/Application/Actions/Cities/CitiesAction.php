@@ -11,11 +11,11 @@ use Psr\Log\LoggerInterface;
 
 abstract class CitiesAction extends Action
 {
-    protected CitiesRepository $citiesRepository;
+    protected CitiesRepository $repository;
 
     public function __construct(LoggerInterface $logger, CitiesRepository $citiesRepository, Connection $db)
     {
         parent::__construct($logger);
-        $this->citiesRepository = $citiesRepository;
+        $this->repository = $citiesRepository;
     }
 }

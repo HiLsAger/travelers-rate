@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Application\Actions\Attractions;
 
+use App\Application\Actions\Cities\CitiesAction;
 use Psr\Http\Message\ResponseInterface as Response;
 
-class ViewAttractionsAction extends AttractionsAction
+class DeleteCitiesAction extends CitiesAction
 {
     /**
      * {@inheritdoc}
@@ -14,10 +15,9 @@ class ViewAttractionsAction extends AttractionsAction
     protected function action(): Response
     {
         $id = (int) $this->resolveArg('id');
-        $model = $this->repository->findUserOfId($id);
 
-        $this->logger->info("Attraction of id `$id` was viewed.");
+        $this->repository->deleteRecord($id);
 
-        return $this->respondWithData($model);
+        return $this->respondWithData(['id' => $id]);
     }
 }

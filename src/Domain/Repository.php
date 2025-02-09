@@ -22,16 +22,31 @@ class Repository
     /**
      * @return Model[]
      */
-    public function findAll(): array
+    public function findAll(array $filters = []): array
     {
-        $data = $this->db->createQueryBuilder()
+        $query = $this->db->createQueryBuilder()
             ->select('*')
             ->from($this->tableName)
-            ->fetchAllAssociative();
+            ->where('1 = 1');
+
+
+        $index = 1;
+
+        foreach ($filters as $property => $value) {
+            if (!$filter = $this->modelClassName::hasFilter($property)) {
+                continue;
+            }
+
+            $query->andWhere("$filter = :value$index")
+                ->setParameter("value$index", $value);
+            $index++;
+        }
+
+        $records = $query->fetchAllAssociative();
 
         $items = [];
-        foreach ($data as $item) {
-            $items[] = $this->load($item);
+        foreach ($records as $record) {
+            $items[] = $this->load($record);
         }
 
         return $items;
@@ -69,6 +84,11 @@ class Repository
         );
 
         return $model->getId();
+    }
+
+    public function deleteRecord(int $id): bool
+    {
+        return (bool)$this->db->delete($this->tableName, ['id' => $id]);
     }
 
     public function load(array $data): Model

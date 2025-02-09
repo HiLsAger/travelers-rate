@@ -13,11 +13,11 @@ class ViewCitiesAction extends CitiesAction
      */
     protected function action(): Response
     {
-        $cityId = (int) $this->resolveArg('id');
-        $city = $this->citiesRepository->findUserOfId($cityId);
+        $id = (int) $this->resolveArg('id');
+        $model = $this->repository->findUserOfId($id);
 
-        $this->logger->info("City of id `$cityId` was viewed.");
+        $this->logger->info("City of id `$id` was viewed.");
 
-        return $this->respondWithData($city);
+        return $this->respondWithData($model);
     }
 }
