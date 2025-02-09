@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+use App\Application\Actions\Cities\AddCitiesAction;
+use App\Application\Actions\Cities\GetCitiesAction;
+use App\Application\Actions\Cities\ViewCitiesAction;
 use App\Application\Actions\Travelers\AddTravelersAction;
 use App\Application\Actions\Travelers\GetTravelersAction;
 use App\Application\Actions\Travelers\ViewTravelersAction;
@@ -25,5 +28,11 @@ return function (App $app) {
         $group->get('', GetTravelersAction::class);
         $group->post('', AddTravelersAction::class);
         $group->get('/{id}', ViewTravelersAction::class);
+    });
+
+    $app->group('/cities', function (Group $group) {
+        $group->get('', GetCitiesAction::class);
+        $group->post('', AddCitiesAction::class);
+        $group->get('/{id}', ViewCitiesAction::class);
     });
 };

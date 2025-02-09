@@ -13,12 +13,12 @@ abstract class TravelersAction extends Action
 {
     protected TravelersRepository $travelersRepository;
 
-    protected Connection $db;
-
-    public function __construct(LoggerInterface $logger, TravelersRepository $travelersRepository, Connection $db)
-    {
+    public function __construct(
+        LoggerInterface $logger,
+        TravelersRepository $travelersRepository,
+        Connection $db
+    ) {
         parent::__construct($logger);
         $this->travelersRepository = $travelersRepository;
-        $this->db = $db;
     }
 }

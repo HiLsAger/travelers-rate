@@ -3,7 +3,6 @@
 namespace App\Domain;
 
 use Respect\Validation\ChainedValidator;
-use Respect\Validation\Validator;
 
 class Model
 {
