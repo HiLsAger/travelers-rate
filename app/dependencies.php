@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 use App\Application\Settings\SettingsInterface;
 use DI\ContainerBuilder;
+use Doctrine\DBAL\Configuration;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\DriverManager;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
@@ -26,5 +29,10 @@ return function (ContainerBuilder $containerBuilder) {
 
             return $logger;
         },
+        Connection::class => function (ContainerInterface $c) {
+            $dbConfig = require './../config/datebase.php';
+
+            return DriverManager::getConnection($dbConfig, new Configuration());
+        }
     ]);
 };
