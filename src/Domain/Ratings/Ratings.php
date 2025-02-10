@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Ratings;
 
+use App\Application\Validators\IdExist;
 use App\Domain\Model;
 use JsonSerializable;
 use Respect\Validation\Validator;
@@ -33,8 +34,12 @@ class Ratings extends Model implements JsonSerializable
     public function getRules()
     {
         return [
-            'traveler_id' => Validator::numericVal()->notBlank(),
-            'attraction_id' => Validator::numericVal()->notBlank(),
+            'traveler_id' => Validator::numericVal()->notBlank()->oneOf(
+                new IdExist('travelers')
+            ),
+            'attraction_id' => Validator::numericVal()->notBlank()->oneOf(
+                new IdExist('attractions')
+            ),
             'score' => Validator::numericVal()->notBlank()->length(1, 5)
         ];
     }

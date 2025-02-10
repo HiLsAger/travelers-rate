@@ -14,9 +14,7 @@ class ViewCitiesAction extends CitiesAction
     protected function action(): Response
     {
         $id = (int) $this->resolveArg('id');
-        $model = $this->repository->findUserOfId($id);
-
-        $this->logger->info("City of id `$id` was viewed.");
+        $model = $this->repository->findModelOfId($id);
 
         return $this->respondWithData($model);
     }

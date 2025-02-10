@@ -14,14 +14,26 @@ class UpdateAttractionsAction extends AttractionsAction
      */
     protected function action(): Response
     {
+        $id = (int)$this->resolveArg('id');
         /**
          * @var Attractions $model
          */
-        $model = $this->repository->load($this->request->getParsedBody());
-        $model->id = (int)$this->resolveArg('id');
+        $model = $this->repository->findModelOfId($id);
 
+        if (empty($model)) {
+            return $this->respondWithData(['Не существует достопримечательности'], 400);
+        }
 
-        $this->repository->updateRecord($model);
+        $model->load($this->request->getParsedBody());
+        $model->id = $id;
+
+        if (!$model->validate()) {
+            return $this->respondWithData($model->getErrors(), 400);
+        }
+
+        if (!$this->repository->updateRecord($model)) {
+            return $this->respondWithData(['Не удалось обновить достопримечательность'], 400);
+        }
 
         return $this->respondWithData(['id' => $model->id]);
     }

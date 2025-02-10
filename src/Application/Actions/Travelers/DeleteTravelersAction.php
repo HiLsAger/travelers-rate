@@ -13,9 +13,11 @@ class DeleteTravelersAction extends TravelersAction
      */
     protected function action(): Response
     {
-        $id = (int)$this->resolveArg('id');
+        $id = (int) $this->resolveArg('id');
 
-        $this->repository->deleteRecord($id);
+        if (!$this->repository->deleteRecord($id)) {
+            return $this->respondWithData(['Не удалось удалить путешественника'], 400);
+        }
 
         return $this->respondWithData(['id' => $id]);
     }

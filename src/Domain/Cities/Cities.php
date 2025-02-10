@@ -17,13 +17,13 @@ class Cities extends Model implements JsonSerializable
     public function __construct(?int $id = null, string $name = '')
     {
         $this->id = $id;
-        $this->name = strtolower($name);
+        $this->name = $name;
     }
 
     public function getRules()
     {
         return [
-            'name' => Validator::stringVal()->notBlank()->length(null, 255),
+            'name' => Validator::stringVal()->notEmpty()->length(null, 255),
         ];
     }
 

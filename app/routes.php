@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 use App\Application\Actions\Attractions\AddAttractionsAction;
 use App\Application\Actions\Attractions\DeleteAttractionsAction;
-use App\Application\Actions\Attractions\DeleteCitiesAction;
 use App\Application\Actions\Attractions\GetAttractionsAction;
 use App\Application\Actions\Attractions\UpdateAttractionsAction;
-use App\Application\Actions\Attractions\UpdateCitiesAction;
 use App\Application\Actions\Attractions\ViewAttractionsAction;
+use App\Application\Actions\Cities\DeleteCitiesAction;
+use App\Application\Actions\Cities\UpdateCitiesAction;
 use App\Application\Actions\Cities\AddCitiesAction;
 use App\Application\Actions\Cities\GetCitiesAction;
 use App\Application\Actions\Cities\GetTravelersVisitedCitiesAction;
@@ -17,8 +17,10 @@ use App\Application\Actions\Ratings\AddRatingsAction;
 use App\Application\Actions\Ratings\GetRatingByAttractionsAction;
 use App\Application\Actions\Ratings\GetRatingByTravelersAction;
 use App\Application\Actions\Travelers\AddTravelersAction;
+use App\Application\Actions\Travelers\DeleteTravelersAction;
 use App\Application\Actions\Travelers\GetTravelersAction;
 use App\Application\Actions\Travelers\GetTravelersByCitiesAction;
+use App\Application\Actions\Travelers\UpdateTravelersAction;
 use App\Application\Actions\Travelers\ViewTravelersAction;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -40,8 +42,8 @@ return function (App $app) {
         $group->get('', GetTravelersAction::class);
         $group->post('', AddTravelersAction::class);
         $group->get('/{id}', ViewTravelersAction::class);
-        $group->delete('/{id}', DeleteAttractionsAction::class);
-        $group->post('/{id}', UpdateAttractionsAction::class);
+        $group->delete('/{id}', DeleteTravelersAction::class);
+        $group->post('/{id}', UpdateTravelersAction::class);
         $group->get('/{id}/visited-cities', GetTravelersVisitedCitiesAction::class);
     });
 

@@ -12,7 +12,7 @@ class RatingsRepository extends Repository
 
     protected string $modelClassName = Ratings::class;
 
-    public function getRatingByAttractions(int $id): Ratings
+    public function getRatingByAttractions(int $id): array
     {
         $records = $this->db->createQueryBuilder()
             ->select($this->tableName.'.*')
@@ -22,14 +22,19 @@ class RatingsRepository extends Repository
             ->setParameter('id', $id)
             ->fetchAllAssociative();
 
-        return $this->load($records);
+        $items = [];
+        foreach ($records as $record) {
+            $items[] = $this->load($record);
+        }
+
+        return $items;
     }
 
     public function getRatingByTravelers(int $id)
     {
         $records = $this->db->createQueryBuilder()
             ->select($this->tableName.'.*')
-            ->innerJoin($this->tableName, 'travelers', 't', "t.id = $this->tableName.attraction_id")
+            ->innerJoin($this->tableName, 'travelers', 't', "t.id = $this->tableName.traveler_id")
             ->from($this->tableName)
             ->where('t.id = :id')
             ->setParameter('id', $id)

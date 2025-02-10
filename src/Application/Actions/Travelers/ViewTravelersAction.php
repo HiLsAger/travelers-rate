@@ -14,9 +14,7 @@ class ViewTravelersAction extends TravelersAction
     protected function action(): Response
     {
         $id = (int) $this->resolveArg('id');
-        $model = $this->repository->findUserOfId($id);
-
-        $this->logger->info("Traveler of id `$id` was viewed.");
+        $model = $this->repository->findModelOfId($id);
 
         return $this->respondWithData($model);
     }

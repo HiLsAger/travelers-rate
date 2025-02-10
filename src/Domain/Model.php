@@ -18,9 +18,9 @@ class Model
         return [];
     }
 
-    public static function hasFilter(string $filter): bool
+    public static function getCondition(string $filter): ?string
     {
-        return in_array($filter, self::getFilters());
+        return self::getFilters()[$filter] ?? null;
     }
 
     public function load($data): bool
@@ -51,7 +51,7 @@ class Model
          */
         foreach ($this->getRules() as $attr => $rule) {
             if (!$rule->validate($this->{$attr})) {
-                $this->errors[] = $attr;
+                $this->errors[] = "Ошибка в свойстве $attr";
             }
         }
 

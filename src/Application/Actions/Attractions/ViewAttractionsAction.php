@@ -14,9 +14,7 @@ class ViewAttractionsAction extends AttractionsAction
     protected function action(): Response
     {
         $id = (int) $this->resolveArg('id');
-        $model = $this->repository->findUserOfId($id);
-
-        $this->logger->info("Attraction of id `$id` was viewed.");
+        $model = $this->repository->findModelOfId($id);
 
         return $this->respondWithData($model);
     }

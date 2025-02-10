@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Attractions;
 
+use App\Application\Validators\IdExist;
 use App\Domain\Model;
 use JsonSerializable;
 use Respect\Validation\Validator;
@@ -35,20 +36,22 @@ class Attractions extends Model implements JsonSerializable
         return [
             'name' => Validator::stringVal()->notBlank()->length(null, 255),
             'distance_from_center' => Validator::numericVal(),
-            'city_id' => Validator::numericVal()->notBlank()
+            'city_id' => Validator::numericVal()->notBlank()->oneOf(
+                new IdExist('cities')
+            )
         ];
     }
 
     public static function getFilters(): array
     {
         return [
-            'city_id' => 'city_id'
+            'city_id' => 'city_id = :city_id'
         ];
     }
 
-    public static function getFilter(string $filter): string|bool
+    public static function getCondition(string $filter): ?string
     {
-        return in_array($filter, self::getFilters()) ? self::getFilters()[$filter] : false;
+        return self::getFilters()[$filter] ?? null;
     }
 
     public function getId(): ?int

@@ -16,18 +16,17 @@ class AddAttractionsAction extends AttractionsAction
     protected function action(): Response
     {
         /**
-         * @var Attractions $attraction
+         * @var Attractions $model
          */
-        $model = $this->repository->load($this->request->getParsedBody());
+        $model = $this->repository->load($this->request->getParsedBody() ?? []);
         $model->id = null;
 
-        if (!$attraction->validate()) {
-            throw new ValidationException('Ошибка в данных');
+        if (!$model->validate()) {
+            return $this->respondWithData($model->getErrors(), 400);
         }
 
-
         if (!$id = $this->repository->insertRecord($model)) {
-            throw new \Exception('Не удалось создать достопримечательность');
+            return $this->respondWithData(['Не удалось создать достопримечательность'], 400);
         }
 
         return $this->respondWithData(['id' => $id]);

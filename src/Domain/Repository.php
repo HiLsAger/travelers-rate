@@ -26,24 +26,17 @@ class Repository
     {
         $query = $this->db->createQueryBuilder()
             ->select('*')
-            ->from($this->tableName)
-            ->where('1 = 1');
-
-
-        $index = 1;
+            ->from($this->tableName);
 
         foreach ($filters as $property => $value) {
-            if (!$filter = $this->modelClassName::hasFilter($property)) {
+            if (!$condition = $this->modelClassName::getCondition($property)) {
                 continue;
             }
-
-            $query->andWhere("$filter = :value$index")
-                ->setParameter("value$index", $value);
-            $index++;
+            $query->andWhere($condition)
+                ->setParameter($property, $value);
         }
 
         $records = $query->fetchAllAssociative();
-
         $items = [];
         foreach ($records as $record) {
             $items[] = $this->load($record);
@@ -56,7 +49,7 @@ class Repository
      * @param int $id
      * @return Model
      */
-    public function findUserOfId(int $id): Model
+    public function findModelOfId(int $id): ?Model
     {
         $records = $this->db->createQueryBuilder()
             ->select('*')
@@ -65,12 +58,19 @@ class Repository
             ->setParameter('id', $id)
             ->fetchAssociative();
 
+        if (!$records) {
+            return null;
+        }
+
         return $this->load($records);
     }
 
     public function insertRecord(Model $model): int
     {
-        $this->db->insert($this->tableName, $model->jsonSerialize());
+        $this->db->insert(
+            $this->tableName,
+            $model->jsonSerialize()
+        );
 
         return (int)$this->db->lastInsertId();
     }
@@ -91,7 +91,7 @@ class Repository
         return (bool)$this->db->delete($this->tableName, ['id' => $id]);
     }
 
-    public function load(array $data): Model
+    public function load(array $data = []): Model
     {
         $model = new $this->modelClassName();
         $model->load($data);
