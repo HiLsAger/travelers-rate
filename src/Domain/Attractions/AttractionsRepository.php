@@ -10,7 +10,7 @@ use Doctrine\DBAL\Query\QueryBuilder;
 
 class AttractionsRepository extends Repository
 {
-    protected string $tableName = 'attractions';
+    protected string $tableName = 'attraction';
 
     protected string $modelClassName = Attractions::class;
 
@@ -48,7 +48,7 @@ class AttractionsRepository extends Repository
     {
         $subQuery = $this->db->createQueryBuilder()
             ->select('AVG(r.score)')
-            ->from('ratings', 'r')
+            ->from('rating', 'r')
             ->where("r.attraction_id = $this->tableName.id");
 
         $query->andWhere($query->expr()->gte('(' . $subQuery->getSQL() . ')', ':minRating'))

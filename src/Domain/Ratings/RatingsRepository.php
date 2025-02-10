@@ -8,7 +8,7 @@ use App\Domain\Repository;
 
 class RatingsRepository extends Repository
 {
-    protected string $tableName = 'ratings';
+    protected string $tableName = 'rating';
 
     protected string $modelClassName = Ratings::class;
 
@@ -16,7 +16,7 @@ class RatingsRepository extends Repository
     {
         $records = $this->db->createQueryBuilder()
             ->select($this->tableName.'.*')
-            ->innerJoin($this->tableName, 'attractions', 'a', "a.id = $this->tableName.attraction_id")
+            ->innerJoin($this->tableName, 'attraction', 'a', "a.id = $this->tableName.attraction_id")
             ->from($this->tableName)
             ->where('a.id = :id')
             ->setParameter('id', $id)
@@ -34,7 +34,7 @@ class RatingsRepository extends Repository
     {
         $records = $this->db->createQueryBuilder()
             ->select($this->tableName.'.*')
-            ->innerJoin($this->tableName, 'travelers', 't', "t.id = $this->tableName.traveler_id")
+            ->innerJoin($this->tableName, 'traveler', 't', "t.id = $this->tableName.traveler_id")
             ->from($this->tableName)
             ->where('t.id = :id')
             ->setParameter('id', $id)

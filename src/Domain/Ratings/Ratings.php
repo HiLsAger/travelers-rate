@@ -35,10 +35,10 @@ class Ratings extends Model implements JsonSerializable
     {
         return [
             'traveler_id' => Validator::numericVal()->notBlank()->oneOf(
-                new IdExist('travelers')
+                new IdExist('traveler')
             ),
             'attraction_id' => Validator::numericVal()->notBlank()->oneOf(
-                new IdExist('attractions')
+                new IdExist('attraction')
             ),
             'score' => Validator::numericVal()->notBlank()->length(1, 5)
         ];

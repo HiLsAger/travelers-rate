@@ -37,7 +37,7 @@ class Attractions extends Model implements JsonSerializable
             'name' => Validator::stringVal()->notBlank()->length(null, 255),
             'distance_from_center' => Validator::numericVal(),
             'city_id' => Validator::numericVal()->notBlank()->oneOf(
-                new IdExist('cities')
+                new IdExist('city')
             )
         ];
     }

@@ -30,7 +30,7 @@ return function (ContainerBuilder $containerBuilder) {
             return $logger;
         },
         Connection::class => function (ContainerInterface $c) {
-            $dbConfig = require './../config/datebase.php';
+            $dbConfig = require './../config/database.php';
 
             return DriverManager::getConnection($dbConfig, new Configuration());
         }
